@@ -7,12 +7,19 @@ from .models import User, Team, Activity, Leaderboard, Workout
 from .serializers import UserSerializer, TeamSerializer, ActivitySerializer, LeaderboardSerializer, WorkoutSerializer
 from django.conf import settings
 
+CODESPACE_URL = "https://reimagined-journey-q74xjwxv7p7h4ggq-8000.app.github.dev"
+LOCAL_URL = "http://localhost:8000"
+
 class UsersView(APIView):
     def get(self, request):
         users = list(settings.MONGO_DB.users.find())
         for user in users:
             user['id'] = str(user['_id'])
-        return Response(UserSerializer(users, many=True).data)
+        return Response({
+            "codespace_url": f"{CODESPACE_URL}/users/",
+            "local_url": f"{LOCAL_URL}/users/",
+            "data": UserSerializer(users, many=True).data
+        })
 
     def post(self, request):
         serializer = UserSerializer(data=request.data)
@@ -28,7 +35,11 @@ class TeamsView(APIView):
         teams = list(settings.MONGO_DB.teams.find())
         for team in teams:
             team['id'] = str(team['_id'])
-        return Response(TeamSerializer(teams, many=True).data)
+        return Response({
+            "codespace_url": f"{CODESPACE_URL}/teams/",
+            "local_url": f"{LOCAL_URL}/teams/",
+            "data": TeamSerializer(teams, many=True).data
+        })
 
     def post(self, request):
         serializer = TeamSerializer(data=request.data)
@@ -44,7 +55,11 @@ class ActivityView(APIView):
         activities = list(settings.MONGO_DB.activity.find())
         for activity in activities:
             activity['id'] = str(activity['_id'])
-        return Response(ActivitySerializer(activities, many=True).data)
+        return Response({
+            "codespace_url": f"{CODESPACE_URL}/activity/",
+            "local_url": f"{LOCAL_URL}/activity/",
+            "data": ActivitySerializer(activities, many=True).data
+        })
 
     def post(self, request):
         serializer = ActivitySerializer(data=request.data)
@@ -60,7 +75,11 @@ class LeaderboardView(APIView):
         leaderboard = list(settings.MONGO_DB.leaderboard.find())
         for entry in leaderboard:
             entry['id'] = str(entry['_id'])
-        return Response(LeaderboardSerializer(leaderboard, many=True).data)
+        return Response({
+            "codespace_url": f"{CODESPACE_URL}/leaderboard/",
+            "local_url": f"{LOCAL_URL}/leaderboard/",
+            "data": LeaderboardSerializer(leaderboard, many=True).data
+        })
 
     def post(self, request):
         serializer = LeaderboardSerializer(data=request.data)
@@ -76,7 +95,11 @@ class WorkoutsView(APIView):
         workouts = list(settings.MONGO_DB.workouts.find())
         for workout in workouts:
             workout['id'] = str(workout['_id'])
-        return Response(WorkoutSerializer(workouts, many=True).data)
+        return Response({
+            "codespace_url": f"{CODESPACE_URL}/workouts/",
+            "local_url": f"{LOCAL_URL}/workouts/",
+            "data": WorkoutSerializer(workouts, many=True).data
+        })
 
     def post(self, request):
         serializer = WorkoutSerializer(data=request.data)
